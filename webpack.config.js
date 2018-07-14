@@ -1,8 +1,11 @@
 'use strict';
 
-require('dotenv').config()
+// require('dotenv').config()
 var webpack = require('webpack');
 var path = require('path');
+
+const Dotenv = require('dotenv-webpack');
+
 
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 
@@ -31,6 +34,7 @@ var config = {
     ]
   },
   plugins: [
+      new Dotenv(),
     new webpack.HotModuleReplacementPlugin()
   ],
 
@@ -38,11 +42,21 @@ var config = {
     port,
     hot: true,
     hotOnly: true,
-    allowedHosts: ['localhost'],
+    allowedHosts: ['localhost','api.salesloft.com'],
     host: 'localhost',
     headers: {
-      'Access-Control-Allow-Origin': '*',
-    },
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+            "Access-Control-Allow-Headers": "X-Requested-With, content-type, Authorization"
+        },
+      "proxy": {
+          "/api": {
+              "target": 'https://api.salesloft.com',
+              "pathRewrite": {'^/api': ''},
+              "changeOrigin": true,
+              "secure": false
+          }
+      },
     contentBase: BUILD_DIR,
   }
 };

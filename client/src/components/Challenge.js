@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
+
 const FlexBox = styled.div`
   display: flex;
   align-items: center;
@@ -27,32 +28,44 @@ const InstructionsBox = styled.div`
   }
 `
 function handleclick() {
+    const apiKey = process.env.SALESLOFT_APPLICATION_ID;
     console.log("click")
-    // $('#getPeople').on('click', function () {
-    //     console.log('click');
-        $.ajax({
-            url: 'https://api.salesloft.com/v2/accounts.json',
-            type: "GET",
-            beforeSend: function (request) {
-                request.setRequestHeader('Access-Control-Allow-Origin', 'http://localhost:5000');
-                request.setRequestHeader("Authorization", '');
-            },
-            success: handleSuccess,
-            error: handleError
-        });
+    console.log(apiKey);
+    const url = "https://api.salesloft.com/v2/users.json"
+    fetch(url, {
+        method: "GET",
+        headers: {
+            "Authorization": "Bearer ak_d9f0d439554e4b088db6794c3aae5d530ea94f146ec7cf2994d26d064ec9929d",
+            "Cache-Control": "no-cache",
+        },
+        credentials: "include"
+    }).then(function(response) {
+        console.log(response.json());
+        // response.status     //=> number 100–599
+        // response.statusText //=> String
+        // // response.headers    //=> Headers
+        // response.url        //=> String
 
-        function handleSuccess(response) {
-            console.log('success', response);
-        }
+        // return response.text()
+    }, function(error) {
+        error.message //=> String
+    })
+    // var settings = {
+    //     "async": true,
+    //     "crossDomain": true,
+    //     "url": "https://api.salesloft.com/v2/users.json",
+    //     "method": "GET",
+    //     "headers": {
+    //         "Authorization": "Bearer ak_d9f0d439554e4b088db6794c3aae5d530ea94f146ec7cf2994d26d064ec9929d",
+    //         "Cache-Control": "no-cache",
+    //         "Postman-Token": "7570d001-e900-44ca-b111-656ffdc94b8f"
+    //     }
+    // }
 
-        function handleError(jqXHR, exception) {
-            console.log('status', jqXHR.status);
-            console.log('exception', exception);
-            console.log('message', jqXHR.responseText);
-        }
-
-    // });
 }
+
+
+
 const ChallengeCode = () => (
     <div>
     <h1>Hello World</h1>
